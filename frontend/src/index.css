@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-900: #1e3a8a;
+  
+  --color-bg-primary: #F8F9FA;
+  --color-bg-surface: #FFFFFF;
+  --color-border-subtle: #E5E7EB;
+  
+  --color-text-primary: #171717;
+  --color-text-secondary: #666666;
+  --color-text-muted: #8A8A8A;
+
+  --color-semantic-success: #16A34A;
+  --color-semantic-warning: #D97706;
+  --color-semantic-danger: #DC2626;
+  --color-semantic-info: #2563EB;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-primary text-text-primary antialiased selection:bg-primary-500/30;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer utilities {
+  .enterprise-card {
+    @apply bg-bg-surface border border-border-subtle rounded-none;
+  }
+  
+  .enterprise-input {
+    @apply w-full bg-bg-surface border border-border-subtle text-text-primary focus:outline-none focus:border-primary-600 focus:ring-1 focus:ring-primary-600 rounded-none px-4 py-2 transition-colors placeholder:text-text-muted;
+  }
+
+  .enterprise-button-primary {
+    @apply bg-primary-600 text-white hover:bg-primary-500 transition-colors px-4 py-2 rounded-none font-medium text-sm flex items-center justify-center gap-2;
+  }
+
+  .enterprise-button-secondary {
+    @apply bg-bg-surface text-text-primary border border-border-subtle hover:bg-gray-50 transition-colors px-4 py-2 rounded-none font-medium text-sm flex items-center justify-center gap-2;
+  }
+
+  .enterprise-button-danger {
+    @apply bg-semantic-danger text-white hover:bg-red-500 transition-colors px-4 py-2 rounded-none font-medium text-sm flex items-center justify-center gap-2;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-none hover:bg-gray-400 transition-colors;
+}
