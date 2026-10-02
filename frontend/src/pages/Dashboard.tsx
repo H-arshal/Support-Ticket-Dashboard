@@ -10,6 +10,7 @@ import { Search, Filter, RefreshCcw } from 'lucide-react';
 export const Dashboard = () => {
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
+  const [showFilters, setShowFilters] = useState(true);
   const [status, setStatus] = useState<Status | undefined>();
   const [priority, setPriority] = useState<Priority | undefined>();
   const [sort, setSort] = useState<string>('createdAt');
@@ -66,51 +67,58 @@ export const Dashboard = () => {
           
           {/* Right: Filters */}
           <div className="flex items-center gap-4 w-full xl:w-auto overflow-x-auto pb-2 xl:pb-0">
-            <div className="flex items-center gap-2 text-text-secondary border-r border-border-subtle pr-4 hidden md:flex">
+            <button 
+              onClick={() => setShowFilters(!showFilters)}
+              className={`flex items-center gap-2 border-r border-border-subtle pr-4 transition-colors ${showFilters ? 'text-primary-600' : 'text-text-secondary hover:text-text-primary'}`}
+            >
               <Filter className="w-4 h-4" />
               <span className="text-sm font-medium">Filters</span>
-            </div>
-
-            <select 
-              className="enterprise-input min-w-[140px]"
-              value={status || ''}
-              onChange={(e) => {
-                setStatus(e.target.value ? e.target.value as Status : undefined);
-                setPage(0);
-              }}
-            >
-              <option value="">All Statuses</option>
-              <option value="OPEN">Open</option>
-              <option value="IN_PROGRESS">In Progress</option>
-              <option value="RESOLVED">Resolved</option>
-            </select>
-
-            <select 
-              className="enterprise-input min-w-[140px]"
-              value={priority || ''}
-              onChange={(e) => {
-                setPriority(e.target.value ? e.target.value as Priority : undefined);
-                setPage(0);
-              }}
-            >
-              <option value="">All Priorities</option>
-              <option value="HIGH">High</option>
-              <option value="MEDIUM">Medium</option>
-              <option value="LOW">Low</option>
-            </select>
-
-            <button 
-              onClick={() => {
-                setPage(0);
-                setSearch('');
-                setStatus(undefined);
-                setPriority(undefined);
-              }}
-              className="enterprise-button-secondary px-3 ml-2"
-              title="Reset Filters"
-            >
-              <RefreshCcw className="w-4 h-4" />
             </button>
+
+            {showFilters && (
+              <>
+                <select 
+                  className="enterprise-input min-w-[140px]"
+                  value={status || ''}
+                  onChange={(e) => {
+                    setStatus(e.target.value ? e.target.value as Status : undefined);
+                    setPage(0);
+                  }}
+                >
+                  <option value="">All Statuses</option>
+                  <option value="OPEN">Open</option>
+                  <option value="IN_PROGRESS">In Progress</option>
+                  <option value="RESOLVED">Resolved</option>
+                </select>
+
+                <select 
+                  className="enterprise-input min-w-[140px]"
+                  value={priority || ''}
+                  onChange={(e) => {
+                    setPriority(e.target.value ? e.target.value as Priority : undefined);
+                    setPage(0);
+                  }}
+                >
+                  <option value="">All Priorities</option>
+                  <option value="HIGH">High</option>
+                  <option value="MEDIUM">Medium</option>
+                  <option value="LOW">Low</option>
+                </select>
+
+                <button 
+                  onClick={() => {
+                    setPage(0);
+                    setSearch('');
+                    setStatus(undefined);
+                    setPriority(undefined);
+                  }}
+                  className="enterprise-button-secondary px-3 ml-2"
+                  title="Reset Filters"
+                >
+                  <RefreshCcw className="w-4 h-4" />
+                </button>
+              </>
+            )}
           </div>
         </div>
 

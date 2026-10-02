@@ -1,6 +1,6 @@
 
 import { Outlet } from 'react-router-dom';
-import { Bell, User, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { CreateTicketModal } from './CreateTicketModal';
 
