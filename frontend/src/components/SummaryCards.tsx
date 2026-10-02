@@ -76,7 +76,7 @@ export const SummaryCards = () => {
             className={`flex items-center gap-4 xl:gap-6 p-4 xl:px-7 min-h-[80px] lg:min-h-[98px] border-border-subtle ${getBorderClasses(idx)}`}
           >
             <div 
-              className="flex-none w-[55px] h-[55px] rounded-none grid place-items-center"
+              className="flex-none w-[55px] h-[55px] rounded-[5px] grid place-items-center"
               style={{ backgroundColor: card.tile }}
             >
                 <TicketIcon type={card.type} tileColor={card.tile} inkColor={card.ink} />
