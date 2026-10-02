@@ -12,17 +12,29 @@ export const Dashboard = () => {
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState<Status | undefined>();
   const [priority, setPriority] = useState<Priority | undefined>();
+  const [sort, setSort] = useState<string>('createdAt');
+  const [direction, setDirection] = useState<'asc' | 'desc'>('desc');
   
   // Modal states
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['tickets', { page, search, status, priority }],
-    queryFn: () => getTickets(page, 10, search, status, priority),
+    queryKey: ['tickets', { page, search, status, priority, sort, direction }],
+    queryFn: () => getTickets(page, 11, search, status, priority, sort, direction),
   });
 
+  const handleSort = (field: string) => {
+    if (sort === field) {
+      setDirection(direction === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSort(field);
+      setDirection('asc');
+    }
+    setPage(0);
+  };
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       
       {/* Summary Cards */}
       <SummaryCards />
@@ -110,6 +122,9 @@ export const Dashboard = () => {
           totalPages={data?.totalPages || 0}
           setPage={setPage}
           onTicketClick={setSelectedTicket}
+          sort={sort}
+          direction={direction}
+          onSort={handleSort}
         />
       </div>
 

@@ -17,7 +17,8 @@ export const TicketDetailsModal = ({ ticket, onClose }: TicketDetailsModalProps)
   const [selectedStatus, setSelectedStatus] = useState<Status | ''>('');
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, status }: { id: number, status: Status }) => updateTicket(id, { status }),
+    mutationFn: ({ id, status, priority }: { id: number, status: Status, priority: string }) => 
+      updateTicket(id, { status, priority: priority as any }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tickets'] });
       queryClient.invalidateQueries({ queryKey: ['ticketSummary'] });
@@ -164,7 +165,11 @@ export const TicketDetailsModal = ({ ticket, onClose }: TicketDetailsModalProps)
               
               <button
                 disabled={!isStatusChanged || updateMutation.isPending}
-                onClick={() => updateMutation.mutate({ id: ticket.id, status: selectedStatus as Status })}
+                onClick={() => updateMutation.mutate({ 
+                  id: ticket.id, 
+                  status: selectedStatus as Status, 
+                  priority: ticket.priority 
+                })}
                 className="enterprise-button-primary disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {updateMutation.isPending ? (

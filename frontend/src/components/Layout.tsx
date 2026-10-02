@@ -16,13 +16,21 @@ export const Layout = () => {
       </div>
 
       {/* Top Navigation Bar */}
-      <header className="flex-none h-[72px] bg-bg-surface border-b border-border-subtle border-t-4 border-t-primary-600 z-30 shadow-sm relative">
+      <header className="flex-none h-[68px] bg-bg-surface border-b border-border-subtle border-t-4 border-t-primary-600 z-30 shadow-sm relative">
         <div className="w-full max-w-7xl mx-auto px-4 md:px-8 h-full flex items-center justify-between">
           
           {/* Left Side: Logo & Page Title */}
           <div className="flex items-center gap-6">
-            <img src="/logo.png" alt="DeskPro Logo" className="h-10 w-auto object-contain" />
-            <div className="hidden md:block border-l border-border-subtle pl-6">
+            <div className="flex items-center gap-3">
+              <img src="/logo.png" alt="Logo" className="h-11.5 w-auto object-contain" />
+              <span className="text-xl tracking-tight hidden sm:block select-none">
+                <span className="font-extrabold text-text-primary">Support</span>
+                <span className="font-extrabold text-primary-600">Ticket</span>
+                <span className="font-medium text-text-muted ml-2">Dashboard</span>
+              </span>
+            </div>
+            
+            <div className="hidden lg:block border-l border-border-subtle pl-6">
               <h1 className="text-base font-bold text-text-primary leading-tight tracking-tight">Dashboard</h1>
               <p className="text-xs text-text-secondary mt-0.5">Good morning. Here's what's happening.</p>
             </div>
@@ -43,7 +51,7 @@ export const Layout = () => {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-7xl mx-auto p-4 md:p-8 relative z-10">
+      <main className="flex-1 w-full max-w-7xl mx-auto p-4 md:px-8 md:py-3 relative z-10">
         <Outlet />
       </main>
       
