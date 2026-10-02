@@ -74,6 +74,31 @@ The backend will automatically detect the `.env` file and route all traffic and 
 
 ---
 
+## ⚠️ Known Limitations
+- **Authentication:** As per the assignment scope, no JWT/OAuth authentication was implemented. Anyone with access to the API can view and modify tickets.
+- **File Attachments:** Currently, tickets only support text descriptions. File uploads were omitted to maintain the 6-hour time limit.
+- **Real-time Updates:** The frontend relies on React Query cache invalidation (polling/refetching on focus) rather than WebSockets for real-time updates.
+
+---
+
+## ⏱️ Time Spent
+Total time spent was approximately **5.5 hours**, broken down as follows:
+- **Project Setup & DB Migrations:** 45 mins
+- **Spring Boot Backend Core (APIs, Specs, Validation):** 2 hours
+- **React Frontend (Tailwind UI, React Query):** 2 hours
+- **Testing, Docker Deployment, & Polish:** 45 mins
+
+---
+
+## 🤖 AI Tool Usage
+AI tools (specifically an agentic AI coding assistant) were used during this assignment to:
+- Generate repetitive boilerplate code (e.g., Spring Boot DTOs and Flyway migration SQL scripts with seed data).
+- Scaffold the Docker and Docker Compose configuration files.
+- Assist in rapidly styling the glassmorphic/minimal Tailwind CSS UI components.
+All generated code was thoroughly reviewed, tested, and modified to ensure it meets the architectural and quality standards required for this assignment.
+
+---
+
 ## 🧪 Testing
 
 To run the backend unit tests:
