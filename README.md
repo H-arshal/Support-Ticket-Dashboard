@@ -1,6 +1,6 @@
-# 🎟️ DeskPro Ticket Manager
+# 🎟️ Support Ticket Dashboard
 
-A modern, responsive, and robust full-stack Customer Support Ticket Management application. Built with a premium glassmorphic UI, powered by a Spring Boot backend, and backed by a MySQL database.
+A modern, responsive, and robust full-stack Customer Support Ticket Management application. Built with a premium "Enterprise Minimal" UI, powered by a Spring Boot backend, and backed by a MySQL database.
 
 ---
 
@@ -9,10 +9,9 @@ A modern, responsive, and robust full-stack Customer Support Ticket Management a
 **Frontend:**
 - React 18 (Vite)
 - TypeScript
-- Tailwind CSS v4 (Custom Dark Theme & Glassmorphism)
+- Tailwind CSS v4 (Enterprise Minimal Theme)
 - React Router (Routing)
 - TanStack Query (Data Fetching & Caching)
-- React Hook Form + Zod (Validation)
 - Lucide React (Icons)
 
 **Backend:**
@@ -23,57 +22,45 @@ A modern, responsive, and robust full-stack Customer Support Ticket Management a
 - Mockito & JUnit 5 (Testing)
 
 **Database & Infrastructure:**
-- MySQL 8.0 (Docker for Local, Aiven Cloud for Production)
-- Docker Compose
+- MySQL 8.0
+- Docker & Docker Compose (Multi-container architecture)
 
 ---
 
-## 🚀 Getting Started (Local Development)
+## 🚀 Getting Started (Docker Compose)
+
+The easiest way to run the entire stack (Frontend, Backend, and Database) is using Docker Compose.
 
 ### Prerequisites
-- Node.js (v18+)
-- Java 21
-- Docker Desktop
+- Docker & Docker Compose installed on your machine.
 
-### 1. Database Setup
-Start the local MySQL database using Docker Compose. This maps to port `3307` to avoid conflicts.
+### Run the Application
+From the root of the repository, simply run:
 ```bash
-docker-compose up -d
+docker compose up --build -d
 ```
+- The **Frontend** will be accessible at: `http://localhost:80`
+- The **Backend API** will be accessible at: `http://localhost:8080/api`
 
-### 2. Backend Setup
-Navigate to the `backend` directory and run the Spring Boot application. Flyway will automatically run the migrations and seed 25 initial tickets.
-```bash
-cd backend
-./mvnw spring-boot:run
-```
-*(The API will be available at `http://localhost:8080/api`)*
-
-### 3. Frontend Setup
-Navigate to the `frontend` directory, install dependencies, and run the development server.
-```bash
-cd frontend
-npm install
-npm run dev
-```
-*(The UI will be available at `http://localhost:5173`)*
+Flyway will automatically run database migrations and inject 60 seed tickets into the database.
 
 ---
 
 ## ☁️ Aiven Cloud Database Setup (Production)
 
-To connect the application to your Aiven MySQL Cloud database instead of local Docker, simply override the Spring Boot environment variables.
+To connect the application to your production Aiven MySQL Cloud database instead of the local Docker container:
 
-You can run the backend with the Aiven variables like this:
-```bash
-export DB_HOST=mysql-ticket-manager-ticketmanager-01.d.aivencloud.com
-export DB_PORT=25970
-export DB_USERNAME=avnadmin
-export DB_PASSWORD=your_aiven_password
-
-./mvnw spring-boot:run
-```
-*Note: Aiven requires SSL, which is already configured in the Spring Boot connection string.*
+1. Copy the `.env.example` file to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+2. Fill in your Aiven credentials in the `.env` file.
+3. Restart Docker Compose:
+   ```bash
+   docker compose down
+   docker compose up -d
+   ```
+The backend will automatically detect the `.env` file and route all traffic and migrations to your Aiven database.
 
 ---
 
@@ -81,9 +68,9 @@ export DB_PASSWORD=your_aiven_password
 
 - **Architecture:** Layered monolith for the backend (Controller -> Service -> Repository). This ensures clear separation of concerns and makes testing straightforward.
 - **Dynamic Filtering:** Implemented Spring Data JPA `Specification` to allow for clean, dynamic filtering by status, priority, and searching by title/email in a single database query.
-- **Optimized Frontend Data Fetching:** Utilized `@tanstack/react-query` for automatic cache invalidation and UI state management. When a ticket is updated, the queries silently re-fetch in the background, providing a seamless UX without page reloads.
-- **Error Handling:** Built a global `@ExceptionHandler` in Spring Boot to ensure standard JSON responses (e.g. `400 Bad Request`, `404 Not Found`) and prevent internal stack traces from leaking to the frontend.
-- **Premium Aesthetics:** Chose to implement a custom Tailwind CSS configuration using glassmorphism (`backdrop-blur`) instead of standard component libraries. This provides a significantly more modern and premium feel.
+- **Optimized Frontend Data Fetching:** Utilized `@tanstack/react-query` for automatic cache invalidation and UI state management. When a ticket is updated, the queries silently re-fetch in the background.
+- **Premium Aesthetics:** Implemented an "Enterprise Minimal" design system with sharp 90-degree corners, extremely tight padding for data density, and a custom interactive ticket statistics bar.
+- **Sorting Integration:** Full-stack sorting implementation allowing users to instantly re-order the ticket table by any column, seamlessly handled natively by the database using Spring Data `PageRequest`.
 
 ---
 
