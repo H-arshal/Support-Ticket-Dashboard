@@ -1,6 +1,6 @@
 <div align="center">
   <img src="https://img.icons8.com/color/120/000000/ticket.png" alt="Ticket Logo"/>
-  <h1>DeskPro — Support Ticket Dashboard</h1>
+  <h1>DeskPro | Support Ticket Dashboard</h1>
   <p><strong>A highly-optimized, enterprise-grade full-stack customer support ticket management application.</strong></p>
   
   <p>
