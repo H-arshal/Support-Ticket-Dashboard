@@ -122,7 +122,7 @@ export const TicketTable = ({ tickets, isLoading, page, totalPages, setPage, onT
                 <td className="px-4 py-2 text-text-muted border-r border-border-subtle">
                   <div className="flex items-center">
                     <Hash className="w-3.5 h-3.5 mr-1" />
-                    {ticket.id}
+                    {ticket.ticketNumber || ticket.id}
                   </div>
                 </td>
                 <td className="px-4 py-2 font-medium text-text-primary group-hover:text-primary-600 transition-colors border-r border-border-subtle">

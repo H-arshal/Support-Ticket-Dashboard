@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +43,7 @@ public class TicketServiceTest {
         ticket.setPriority(Priority.HIGH);
         Page<Ticket> pagedResponse = new PageImpl<>(List.of(ticket));
 
-        when(ticketRepository.findAll(any(Specification.class), eq(pageRequest)))
+        when(ticketRepository.findTicketsWithFilters("test", Status.OPEN, Priority.HIGH, pageRequest))
                 .thenReturn(pagedResponse);
 
         // Act
@@ -52,25 +51,25 @@ public class TicketServiceTest {
 
         // Assert
         assertEquals(1, result.getContent().size());
-        verify(ticketRepository).findAll(any(Specification.class), eq(pageRequest));
+        verify(ticketRepository).findTicketsWithFilters("test", Status.OPEN, Priority.HIGH, pageRequest);
     }
 
     @Test
     void updateTicket_ShouldPersistChanges() {
         // Arrange
         Ticket existingTicket = new Ticket();
-        existingTicket.setId(1L);
+        existingTicket.setId("mongodb-id-123");
         existingTicket.setStatus(Status.OPEN);
         existingTicket.setPriority(Priority.LOW);
 
-        when(ticketRepository.findById(1L)).thenReturn(Optional.of(existingTicket));
+        when(ticketRepository.findById("mongodb-id-123")).thenReturn(Optional.of(existingTicket));
 
         TicketUpdateDto updateDto = new TicketUpdateDto();
         updateDto.setStatus(Status.IN_PROGRESS);
         updateDto.setPriority(Priority.HIGH);
 
         // Act
-        ticketService.updateTicket(1L, updateDto);
+        ticketService.updateTicket("mongodb-id-123", updateDto);
 
         // Assert
         ArgumentCaptor<Ticket> ticketCaptor = ArgumentCaptor.forClass(Ticket.class);

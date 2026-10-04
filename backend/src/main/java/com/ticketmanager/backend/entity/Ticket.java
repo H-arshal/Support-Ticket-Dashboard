@@ -2,51 +2,47 @@ package com.ticketmanager.backend.entity;
 
 import com.ticketmanager.backend.enums.Priority;
 import com.ticketmanager.backend.enums.Status;
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "tickets")
+@Document(collection = "tickets")
 public class Ticket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false, length = 120)
     private String title;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "customer_email", nullable = false)
+    @Field("customer_email")
     private String customerEmail;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Priority priority;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Status status = Status.OPEN;
 
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false, nullable = false)
+    private Long ticketNumber;
+
+    @CreatedDate
+    @Field("created_at")
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
+    @LastModifiedDate
+    @Field("updated_at")
     private LocalDateTime updatedAt;
 
     // Getters and Setters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -88,6 +84,14 @@ public class Ticket {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Long getTicketNumber() {
+        return ticketNumber;
+    }
+
+    public void setTicketNumber(Long ticketNumber) {
+        this.ticketNumber = ticketNumber;
     }
 
     public LocalDateTime getCreatedAt() {

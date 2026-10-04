@@ -17,7 +17,7 @@ export const TicketDetailsModal = ({ ticket, onClose }: TicketDetailsModalProps)
   const [selectedStatus, setSelectedStatus] = useState<Status | ''>('');
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, status, priority }: { id: number, status: Status, priority: string }) => 
+    mutationFn: ({ id, status, priority }: { id: string, status: Status, priority: string }) => 
       updateTicket(id, { status, priority: priority as any }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tickets'] });
@@ -81,7 +81,7 @@ export const TicketDetailsModal = ({ ticket, onClose }: TicketDetailsModalProps)
         <div className="flex justify-between items-start p-6 border-b border-border-subtle bg-bg-surface">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <span className="text-text-muted font-medium text-sm">#{ticket.id}</span>
+              <span className="text-text-muted font-medium text-sm">#{ticket.ticketNumber || ticket.id}</span>
               <span className={`px-2.5 py-1 rounded-none text-xs font-medium border uppercase flex items-center ${getStatusColor(ticket.status)}`}>
                 {getStatusIcon(ticket.status)}
                 {ticket.status.replace('_', ' ')}

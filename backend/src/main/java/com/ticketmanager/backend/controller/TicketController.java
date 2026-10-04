@@ -50,12 +50,12 @@ public class TicketController {
     }
 
     @GetMapping("/{id}")
-    public TicketResponseDto getTicket(@PathVariable Long id) {
+    public TicketResponseDto getTicket(@PathVariable String id) {
         return ticketService.getTicket(id);
     }
 
     @PatchMapping("/{id}")
-    public void updateTicket(@PathVariable Long id, @Valid @RequestBody TicketUpdateDto updateDto) {
+    public void updateTicket(@PathVariable String id, @Valid @RequestBody TicketUpdateDto updateDto) {
         ticketService.updateTicket(id, updateDto);
     }
 

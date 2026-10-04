@@ -2,7 +2,8 @@ export type Priority = 'LOW' | 'MEDIUM' | 'HIGH';
 export type Status = 'OPEN' | 'IN_PROGRESS' | 'RESOLVED';
 
 export interface Ticket {
-  id: number;
+  id: string;
+  ticketNumber?: number;
   title: string;
   description: string;
   customerEmail: string;

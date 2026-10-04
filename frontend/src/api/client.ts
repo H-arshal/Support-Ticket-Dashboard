@@ -35,7 +35,7 @@ export const getTickets = async (
   return response.data;
 };
 
-export const getTicket = async (id: number) => {
+export const getTicket = async (id: string) => {
   const response = await apiClient.get<Ticket>(`/tickets/${id}`);
   return response.data;
 };
@@ -45,7 +45,7 @@ export const createTicket = async (data: TicketCreateDto) => {
   return response.data;
 };
 
-export const updateTicket = async (id: number, data: TicketUpdateDto) => {
+export const updateTicket = async (id: string, data: TicketUpdateDto) => {
   const response = await apiClient.patch(`/tickets/${id}`, data);
   return response.data;
 };

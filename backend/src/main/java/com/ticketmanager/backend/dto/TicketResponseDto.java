@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
 
 public class TicketResponseDto {
 
-    private Long id;
+    private String id;
+    private Long ticketNumber;
     private String title;
     private String description;
     private String customerEmail;
@@ -16,12 +17,20 @@ public class TicketResponseDto {
     private LocalDateTime updatedAt;
 
     // Getters and Setters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public Long getTicketNumber() {
+        return ticketNumber;
+    }
+
+    public void setTicketNumber(Long ticketNumber) {
+        this.ticketNumber = ticketNumber;
     }
 
     public String getTitle() {

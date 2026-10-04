@@ -1,10 +1,12 @@
 package com.ticketmanager.backend.repository;
 
 import com.ticketmanager.backend.entity.Ticket;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import com.ticketmanager.backend.enums.Status;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TicketRepository extends JpaRepository<Ticket, Long>, JpaSpecificationExecutor<Ticket> {
+public interface TicketRepository extends MongoRepository<Ticket, String>, TicketRepositoryCustom {
+    long countByStatus(Status status);
+    Ticket findTopByOrderByTicketNumberDesc();
 }

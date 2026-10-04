@@ -5,16 +5,14 @@ import com.ticketmanager.backend.entity.Ticket;
 import com.ticketmanager.backend.enums.Priority;
 import com.ticketmanager.backend.enums.Status;
 import com.ticketmanager.backend.repository.TicketRepository;
-import com.ticketmanager.backend.specification.TicketSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Service
 public class TicketService {
@@ -33,40 +31,47 @@ public class TicketService {
         ticket.setCustomerEmail(dto.getCustomerEmail());
         ticket.setPriority(dto.getPriority());
         ticket.setStatus(Status.OPEN); // Default as per requirements
+        
+        // MongoDB doesn't automatically insert created/updated dates unless we use @EnableMongoAuditing
+        // For simplicity, we manually set them here or configure auditing. Let's set them manually.
+        LocalDateTime now = LocalDateTime.now();
+        ticket.setCreatedAt(now);
+        ticket.setUpdatedAt(now);
+
+        Ticket lastTicket = ticketRepository.findTopByOrderByTicketNumberDesc();
+        Long nextNumber = (lastTicket != null && lastTicket.getTicketNumber() != null) ? lastTicket.getTicketNumber() + 1 : 1L;
+        ticket.setTicketNumber(nextNumber);
 
         ticketRepository.save(ticket);
     }
 
     public Page<TicketResponseDto> getTickets(String search, Status status, Priority priority, Pageable pageable) {
-        Specification<Ticket> spec = TicketSpecification.getFilteredTickets(search, status, priority);
-        Page<Ticket> tickets = ticketRepository.findAll(spec, pageable);
+        Page<Ticket> tickets = ticketRepository.findTicketsWithFilters(search, status, priority, pageable);
         return tickets.map(this::mapToResponseDto);
     }
 
-    public TicketResponseDto getTicket(Long id) {
+    public TicketResponseDto getTicket(String id) {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found"));
         return mapToResponseDto(ticket);
     }
 
-    public void updateTicket(Long id, TicketUpdateDto dto) {
+    public void updateTicket(String id, TicketUpdateDto dto) {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found"));
 
         ticket.setStatus(dto.getStatus());
         ticket.setPriority(dto.getPriority());
+        ticket.setUpdatedAt(LocalDateTime.now());
 
         ticketRepository.save(ticket);
     }
 
     public TicketSummaryDto getSummary() {
-        // According to requirements, summary counts represent the entire dataset
-        List<Ticket> allTickets = ticketRepository.findAll();
-        
-        long total = allTickets.size();
-        long open = allTickets.stream().filter(t -> t.getStatus() == Status.OPEN).count();
-        long inProgress = allTickets.stream().filter(t -> t.getStatus() == Status.IN_PROGRESS).count();
-        long resolved = allTickets.stream().filter(t -> t.getStatus() == Status.RESOLVED).count();
+        long open = ticketRepository.countByStatus(Status.OPEN);
+        long inProgress = ticketRepository.countByStatus(Status.IN_PROGRESS);
+        long resolved = ticketRepository.countByStatus(Status.RESOLVED);
+        long total = ticketRepository.count();
 
         return new TicketSummaryDto(total, open, inProgress, resolved);
     }
@@ -74,6 +79,7 @@ public class TicketService {
     private TicketResponseDto mapToResponseDto(Ticket ticket) {
         TicketResponseDto dto = new TicketResponseDto();
         dto.setId(ticket.getId());
+        dto.setTicketNumber(ticket.getTicketNumber());
         dto.setTitle(ticket.getTitle());
         dto.setDescription(ticket.getDescription());
         dto.setCustomerEmail(ticket.getCustomerEmail());
